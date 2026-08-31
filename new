@@ -1,1 +1,20 @@
+/* ==========================================
+   DATA REVIEW DROPDOWN FIX
+========================================== */
 
+.data-review-dropdown {
+    position: relative !important;
+    z-index: 10000 !important;
+}
+
+.data-review-dropdown .Select-menu-outer {
+    z-index: 99999 !important;
+}
+
+.data-review-dropdown .Select-menu {
+    z-index: 99999 !important;
+}
+
+.data-review-dropdown .VirtualizedSelectOption {
+    padding: 10px 14px !important;
+}
