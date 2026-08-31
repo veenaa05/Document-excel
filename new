@@ -1,1 +1,40 @@
+/* ==========================================================
+   DATA REVIEW - CONFIRMED TYPE DROPDOWN FIX
+========================================================== */
 
+/* Keep the dropdown above the table rows */
+.data-review-dropdown {
+    position: relative !important;
+    z-index: 10000 !important;
+}
+
+/* Dropdown menu must appear above other rows */
+.data-review-dropdown .Select-menu-outer,
+.data-review-dropdown .Select-menu,
+.data-review-dropdown .Select__menu {
+    z-index: 99999 !important;
+}
+
+/* Prevent table elements from clipping the dropdown */
+.data-review-table,
+.data-review-table tbody,
+.data-review-table tr,
+.data-review-table td {
+    overflow: visible !important;
+}
+
+/* Give the Confirmed Type cell its own stacking layer */
+.data-review-table td:last-child {
+    position: relative;
+    z-index: 10000;
+}
+
+/* Dropdown options */
+.data-review-dropdown .VirtualizedSelectOption {
+    padding: 10px 14px !important;
+}
+
+/* Highlight selected/hovered option */
+.data-review-dropdown .VirtualizedSelectFocusedOption {
+    background: #EEF4FF !important;
+}
