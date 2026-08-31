@@ -1,1 +1,35 @@
+/* ==========================================
+   DATA REVIEW - CONFIRMED TYPE DROPDOWN
+   ========================================== */
 
+.data-review-type-dropdown {
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+.data-review-type-dropdown .dash-dropdown-menu {
+    z-index: 99999 !important;
+    max-height: 180px !important;
+}
+
+.data-review-type-dropdown .dash-dropdown-grid {
+    z-index: 99999 !important;
+}
+
+.data-review-type-dropdown .dash-dropdown-grid-container {
+    z-index: 99999 !important;
+}
+
+.data-review-type-dropdown .Select-menu-outer {
+    z-index: 99999 !important;
+}
+
+.data-review-type-dropdown .Select-menu {
+    z-index: 99999 !important;
+}
+
+/* Keep the Data Review table from clipping dropdown menus */
+.data-review-type-dropdown,
+.data-review-type-dropdown > div {
+    overflow: visible !important;
+}
