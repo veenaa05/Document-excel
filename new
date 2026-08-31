@@ -1,1 +1,39 @@
+/* ==========================================
+   DATA REVIEW - DROPDOWN OVERLAP FIX
+========================================== */
 
+/* Normal dropdowns stay at a low stacking level */
+.data-review-dropdown {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* The opened dropdown menu must be above all table rows */
+.data-review-dropdown .Select-menu-outer {
+    z-index: 99999 !important;
+    background: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* React-select menu */
+.data-review-dropdown .Select-menu {
+    z-index: 99999 !important;
+    background: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Keep dropdown options readable */
+.data-review-dropdown .VirtualizedSelectOption {
+    background: #ffffff !important;
+    padding: 10px 14px !important;
+}
+
+/* Hovered option */
+.data-review-dropdown .VirtualizedSelectFocusedOption {
+    background: #EEF4FF !important;
+}
+
+/* Keep table cells from creating unwanted clipping */
+.data-review-table td {
+    position: relative;
+}
