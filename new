@@ -1,62 +1,389 @@
-def generate_config_page(df: pd.DataFrame, profiles: dict, confirmed_dtypes: dict) -> html.Div:
-    """
-    Generate the configuration page layout
-    User selects KPIs, filters, and aggregation types
-    """
 
-    # Handle both dict and object formats for confirmed_dtypes
-    # If confirmed_dtypes is empty, use profiles
-    if not confirmed_dtypes:
-        confirmed_dtypes = {}
-        for col, profile in profiles.items():
-            if isinstance(profile, dict):
-                confirmed_dtypes[col] = profile.get('dtype', 'categorical')
-            else:
-                confirmed_dtypes[col] = profile.dtype
+/* ==========================================================
+   USER MASTER PAGE
+========================================================== */
 
-    # Get numeric and categorical columns based on confirmed types
-    numeric_cols = [col for col, dtype in confirmed_dtypes.items() if dtype == 'numeric']
-    categorical_cols = [col for col, dtype in confirmed_dtypes.items() if dtype == 'categorical']
-    temporal_cols = [col for col, dtype in confirmed_dtypes.items() if dtype == 'temporal']
+body{
+    background:#F5F7FA;
+}
 
-    # Create layout
-    layout = html.Div([
-        # Header
-        html.Div([
-            html.H1("Configure Your Dashboard", style={'fontSize': '28px', 'fontWeight': 'bold', 'color': TEXT}),
-            html.P(
-                "Select KPIs, aggregation types, and filters. You can add multiple of each.",
-                style={'color': TEXT_LIGHT, 'marginBottom': '20px'}
-            ),
-        ], style={'marginBottom': '30px'}),
+/* Cards */
 
-        # KPI Configuration Section
-        html.Div([
-            html.H3("KPI Metrics", style={'fontSize': '18px', 'fontWeight': 'bold', 'color': TEXT, 'marginBottom': '15px'}),
+.card{
+    border:1px solid #E5E7EB !important;
+    border-radius:14px !important;
+    box-shadow:0 2px 10px rgba(15,23,42,.05) !important;
+}
 
-            # KPI selection guide
-            html.Div(
-                f"Select from {len(numeric_cols)} numeric column{'s' if len(numeric_cols) != 1 else ''}",
-                style={'color': TEXT_LIGHT, 'fontSize': '12px', 'marginBottom': '10px'}
-            ),
+.card-body{
+    padding:24px !important;
+}
 
-            # Multi-select for KPI columns
-            dcc.Dropdown(
-                id='kpi-column-selector',
-                options=[{'label': col, 'value': col} for col in numeric_cols],
-                multi=True,
-                placeholder="Select columns to add as KPIs...",
-                className='config-kpi-dropdown',
-                style={'width': '100%', 'marginBottom': '20px'}
-            ),
+/* Form */
 
-            # Container for selected KPIs
-            html.Div(id='kpi-items-container', children=[]),
+.form-control,
+.form-select{
+    height:44px;
+    border-radius:10px;
+    border:1px solid #D1D5DB;
+}
 
-            # Add KPI button (appears after selection)
-            dbc.Button("+ Add Selected as KPI", id='btn-add-kpi', outline=True, color="info",
-                       size="sm", style={'marginTop': '15px', 'display': 'none'}),
+.form-control:focus,
+.form-select:focus{
+    box-shadow:none;
+    border-color:#2563EB;
+}
 
-        ],  className='config-kpi-selection',
-            style={'background': CARD_BG, 'padding': '20px', 'borderRadius': '8px', 'marginBottom': '30px',
-                  'border': f'1px solid {BORDER}'}),
+/* Buttons */
+
+.btn-primary{
+    border-radius:10px;
+    font-weight:600;
+}
+
+.btn-link{
+    text-decoration:none;
+}
+
+/* Table */
+
+.table{
+    width:100%;
+    margin-bottom:0;
+}
+
+.table thead th{
+    background:#F8FAFC;
+    color:#374151;
+    font-weight:600;
+    border-bottom:1px solid #E5E7EB;
+    padding:14px;
+}
+
+.table tbody td{
+    padding:16px 14px;
+    vertical-align:middle;
+}
+
+.table tbody tr{
+    background:#F9FAFB;
+}
+
+/* Role badge */
+
+.badge{
+    padding:7px 14px !important;
+    font-size:12px !important;
+    font-weight:600;
+}
+
+/* Green Switch */
+
+.form-check-input{
+    width:48px;
+    height:24px;
+}
+
+.form-check-input:checked{
+    background:#22C55E !important;
+    border-color:#22C55E !important;
+}
+
+.form-check-input:focus{
+    box-shadow:none !important;
+}
+
+/* Edit Button */
+
+.edit-btn{
+    color:#2563EB;
+    font-weight:600;
+    border:none;
+    background:none;
+}
+
+.edit-btn{
+    color:#1D4ED8;
+}
+
+/* Search */
+
+.user-search{
+    max-width:320px;
+}
+
+/* Message */
+
+.alert{
+    border-radius:10px;
+}
+
+/* ===========================
+   COMPANY TABLE
+=========================== */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: #F8FAFC;
+    border-bottom: 2px solid #E5E7EB;
+    color: #374151;
+    font-weight: 600;
+    padding: 14px 18px;
+}
+
+.table tbody td {
+    padding: 16px 18px;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    background: #F9FAFB;
+}
+
+.table-responsive {
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+/* ---------- Card ---------- */
+
+.card{
+    border:none !important;
+    border-radius:16px !important;
+    box-shadow:0 2px 10px rgba(0,0,0,.06) !important;
+}
+
+/* ---------- Labels ---------- */
+
+label{
+    font-weight:600;
+    color:#374151;
+    margin-bottom:6px;
+}
+
+/* ---------- Inputs ---------- */
+
+.form-control,
+.Select-control,
+.Select__control{
+    height:44px !important;
+    border-radius:10px !important;
+    border:1px solid #D1D5DB !important;
+    box-shadow:none !important;
+}
+
+/* ---------- Dropdown ---------- */
+
+.Select-menu-outer{
+    border-radius:10px;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-primary{
+    border-radius:10px !important;
+    height:44px;
+    font-weight:600;
+}
+
+/* ---------- Tables ---------- */
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+    background:#F8FAFC;
+    color:#374151;
+    font-weight:700;
+    border-bottom:2px solid #E5E7EB;
+}
+
+.table td{
+    vertical-align:middle;
+    padding:14px;
+}
+
+.table tbody{
+    background:#F9FAFB;
+}
+
+/* ---------- Responsive ---------- */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.VirtualizedSelectFocusedOption{
+    background:#EEF4FF !important;
+}
+
+
+/* ==========================================
+   Mapping Page Dropdown Fix
+========================================== */
+
+.card,
+.card-body {
+    overflow: visible !important;
+}
+
+.table-responsive{
+    overflow-x:auto;
+    overflow-y:visible;
+}
+
+.Select{
+    position:relative;
+}
+
+.Select-menu-outer{
+    z-index:5000 !important;
+    border-radius:10px;
+}
+
+.VirtualizedSelectOption{
+    padding:10px 14px;
+}
+
+.VirtualizedSelectFocusedOption{
+    background:#EEF4FF !important;
+}
+
+
+/* ===========================
+   PORTAL PAGE DROPDOWN FIX
+=========================== */
+
+#portal-company-dropdown {
+    position: relative;
+    z-index: 1000;
+}
+
+#portal-company-dropdown .Select-menu-outer,
+#portal-company-dropdown .Select-menu,
+#portal-company-dropdown .Select__menu {
+    z-index: 99999 !important;
+}
+
+#portal-company-dropdown .Select-control,
+#portal-company-dropdown .Select__control {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Allow dropdown to overflow card */
+
+.card,
+.card-body {
+    overflow: visible !important;
+}
+
+
+/* Dash 4 dropdown fix */
+
+.dash-dropdown {
+    position: relative;
+    z-index: 9999;
+}
+
+.dash-dropdown-grid {
+    z-index: 9999 !important;
+}
+
+.dash-dropdown-grid-container {
+    z-index: 9999 !important;
+}
+
+.dash-dropdown-menu {
+    z-index: 99999 !important;
+}
+
+/* Cards should not cover the dropdown */
+.card {
+    position: relative;
+}
+
+/* ==========================================
+   DATA REVIEW - DROPDOWN OVERLAP FIX
+========================================== */
+
+/* Normal dropdowns stay at a low stacking level */
+.data-review-dropdown {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* The opened dropdown menu must be above all table rows */
+.data-review-dropdown .Select-menu-outer {
+    z-index: 99999 !important;
+    background: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* React-select menu */
+.data-review-dropdown .Select-menu {
+    z-index: 99999 !important;
+    background: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Keep dropdown options readable */
+.data-review-dropdown .VirtualizedSelectOption {
+    background: #ffffff !important;
+    padding: 10px 14px !important;
+}
+
+/* Hovered option */
+.data-review-dropdown .VirtualizedSelectFocusedOption {
+    background: #EEF4FF !important;
+}
+
+/* Keep table cells from creating unwanted clipping */
+.data-review-table td {
+    position: relative;
+}
+
+/* ==========================================================
+   CONFIG PAGE - KPI DROPDOWN FIX
+========================================================== */
+
+/* KPI card must stay above the sections below it */
+.config-kpi-section {
+    position: relative !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+}
+
+/* KPI dropdown */
+.config-kpi-dropdown {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* Open KPI dropdown menu */
+.config-kpi-dropdown .Select-menu-outer,
+.config-kpi-dropdown .Select-menu {
+    z-index: 999999 !important;
+    background: #ffffff !important;
+}
+
+/* Dash newer dropdown structure */
+.config-kpi-dropdown .dash-dropdown-menu {
+    z-index: 999999 !important;
+}
+
+/* Keep the dropdown options visible */
+.config-kpi-dropdown .VirtualizedSelectOption {
+    background: #ffffff !important;
+    padding: 10px 14px !important;
+}
+
+.config-kpi-dropdown .VirtualizedSelectFocusedOption {
+    background: #EEF4FF !important;
+}
