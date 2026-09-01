@@ -1,1 +1,38 @@
+/* ==========================================================
+   CONFIG PAGE - KPI DROPDOWN FIX
+========================================================== */
 
+/* KPI card must stay above the sections below it */
+.config-kpi-section {
+    position: relative !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+}
+
+/* KPI dropdown */
+.config-kpi-dropdown {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* Open KPI dropdown menu */
+.config-kpi-dropdown .Select-menu-outer,
+.config-kpi-dropdown .Select-menu {
+    z-index: 999999 !important;
+    background: #ffffff !important;
+}
+
+/* Dash newer dropdown structure */
+.config-kpi-dropdown .dash-dropdown-menu {
+    z-index: 999999 !important;
+}
+
+/* Keep the dropdown options visible */
+.config-kpi-dropdown .VirtualizedSelectOption {
+    background: #ffffff !important;
+    padding: 10px 14px !important;
+}
+
+.config-kpi-dropdown .VirtualizedSelectFocusedOption {
+    background: #EEF4FF !important;
+}
